@@ -55,7 +55,10 @@ export default {
         }
     },
   created () {
-    sessionStorage.setItem('accessToken', '')
+      if(sessionStorage.getItem('accessToken')){
+          this.$router.push('index')
+      }
+    
   },
     methods:{
         submit(){

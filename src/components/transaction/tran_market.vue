@@ -11,7 +11,7 @@
       >{{item}}</div>
     </div>
     <div class="bodylist">
-      <div class="listmodule" v-for="(item,index) in bodylist" :key="index">
+      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click="$router.push('mytrans')">
         <div class="list_model first_div">
           <div>单号：{{item.orderNo}}</div>
           <div>{{item.offerChinese}}</div>
