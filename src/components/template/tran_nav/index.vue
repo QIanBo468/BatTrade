@@ -48,7 +48,7 @@ export default {
 
 <style lang="less" scoped>
 .nav{
-    background:#0D2179;   
+    background:#0B0C21;   
     position: fixed;
     top:0; 
     width: 100%;
@@ -59,8 +59,6 @@ export default {
     color:#fff;
     font-weight:500;
     font-size: 18px;
-    
- 
 }
 .back{
     width:30px;

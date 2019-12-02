@@ -11,7 +11,7 @@
       >{{item}}</div>
     </div>
     <div class="bodylist" >
-      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" >
+      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click.stop="dingdan">
         <div class="list_model first_div">
           <div>单号：{{item.orderNo}}</div>
           <div>
@@ -65,6 +65,9 @@ export default {
       page: 1, //页数
       lastId: 0, //lastid
       bodylist: [
+        {
+          orderNo:123456,status:0,amount:12,unitPrice:100,price:120
+        }
       ], //列表
       lastpage: "" //最后一页
     };
@@ -244,6 +247,11 @@ export default {
 
 
         
+    },
+    dingdan() {
+      // if(this.tabstate){
+        this.$router.push({path:'myDingdan',query:{type:this.tabstate}})
+      // }
     }
   },
   components: {}

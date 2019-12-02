@@ -29,6 +29,7 @@ import topUp from '@/components/index/topUp'
 import address from '@/components/index/address'
 import mall from '@/components/mall'
 import extractRecord from '@/components/index/extractRecord'
+import mydingdan from '@/components/transaction/myDingdan'
 
 
 // import charge from '@/components/index/'
@@ -53,6 +54,11 @@ export default new Router({
       path: '/authentication',
       name: 'authentication',
       component: authentication
+    },
+    {
+      path: '/mydingdan',
+      name: 'mydingdan',
+      component: mydingdan
     },
     {
       path: '/register',

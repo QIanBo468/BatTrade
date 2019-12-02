@@ -28,7 +28,7 @@ html,body{
   /* margin-top: 60px; */
 }
 .van-nav-bar .van-icon{
-    color: #111;
+    /* color: #111; */
 }
 .overText{
     overflow: hidden;
