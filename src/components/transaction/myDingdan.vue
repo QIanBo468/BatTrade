@@ -2,10 +2,17 @@
   <div class="mydingdan">
     <trannav :title="title" :leftj="true"></trannav>
     <div class="bodylist">
-      <div class="listmodule" v-for="(item,index) in bodylist" :key="index">
-        <div class="between">
+      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click="goxq(index)">
+        <div class="between" >
           <p>单号:{{item.orderNo}}</p>
-          <span>匹配中</span>
+          <span style="color:#f00">
+            <span v-if="item.status == 0">匹配中</span>
+            <span v-if="item.status == 1">待付款</span>
+            <span v-if="item.status == 2">待确认</span>
+            <span v-if="item.status == 3" style="color:#1890FF">已完成</span>
+            <span v-if="item.status == -1">申诉未付款</span>
+            <span v-if="item.status == -2">申诉未确认</span>
+          </span>
         </div>
         <div class="center">
           <div>
@@ -22,12 +29,12 @@
           </div>
         </div>
         <div class="between">
-          <p>卖家昵称</p>
-          <span>{{item.usernam}}</span>
+          <p>{{tabstate ==0 ? '卖家昵称':'买家昵称'}}</p>
+          <span>{{item.nickname}}</span>
         </div>
         <div class="between">
-          <p>卖家手机号</p>
-          <span>{{item.phone}}</span>
+          <p>{{tabstate ==0 ? '卖家手机号':'买家手机号'}}</p>
+          <span>{{item.mobile}}</span>
         </div>
       </div>
     </div>
@@ -43,21 +50,19 @@ export default {
       interface: 0,
       page: 1, //页数
       lastId: 0, //lastid
+      tabstate:"",
       bodylist: [
-        {
-          orderNo: 1234567,
-          status: 0,
-          amount: 20,
-          unitPrice: 2000.0,
-          price: 12354,
-          usernam: "zhangsna",
-          phone: 13371495332
-        }
       ]
     };
   },
   created() {
-    // this.myjiao();
+    this.tabstate = this.$route.query.type
+    if(this.tabstate ==0){
+      this.title = '我的买单'
+    } else {
+      this.title = '我的卖单'
+    }
+    this.myjiao();
   },
   mounted() {
     window.addEventListener("scroll", this.scrollFn, true);
@@ -130,9 +135,9 @@ export default {
       };
 
       if (_this.tabstate == 0) {
-        _this.interface = 1001;
+        _this.interface = 3001;
       } else {
-        _this.interface = 1000;
+        _this.interface = 3000;
       }
 
       _this.$axios
@@ -144,7 +149,7 @@ export default {
           data: data
         })
         .then(res => {
-          console.log("我的交易", res);
+          console.log("交易记录", res);
           if (res.code == 0) {
             _this.lastId = res.data.lastId;
             _this.page = res.data.currentPage;
@@ -154,6 +159,48 @@ export default {
             _this.$toast(res.message);
           }
         });
+    },
+    goxq(index) {
+      let list = this.bodylist;
+      let id = list[index].id;
+      console.log(list[index].status);
+      // return false;
+
+      if (list[index].status < 0) {
+        this.$toast("该订单已被投诉无法查看详情");
+        return false;
+      }
+
+      if (list[index].status == 3 && this.tabstate != 1) {
+        // console.log(list[index].onOffer)
+        this.$router.push({
+          path: "/payment",
+          query: { id: id, states: true }
+        });
+      }
+      if (list[index].status == 3 && this.tabstate == 1) {
+        // console.log(list[index].onOffer)
+        this.$router.push({
+          path: "/payment",
+          query: { id: id, states: true, tabstate: 1 }
+        });
+      }
+      if (list[index].status != 1 && list[index].status != 3) {
+        this.$router.push({
+          path: "/payment",
+          query: { id: id, states: false }
+        });
+      }
+      if (list[index].status == 1) {
+        this.$router.push({
+          path: "/payment",
+          query: { id: id, true: false, tabstate: 0 }
+        });
+      }
+
+      /*if(list[index].status == 2&&this.tabstate == 0){
+           this.$router.push({path:'/payment',query:{id:id,states:true}})
+        }*/
     }
   }
 };

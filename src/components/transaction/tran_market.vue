@@ -11,10 +11,20 @@
       >{{item}}</div>
     </div>
     <div class="bodylist">
-      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click="$router.push('mytrans')">
+      <div
+        class="listmodule"
+        v-for="(item,index) in bodylist"
+        :key="index"
+        @click="pipei(item)"
+      >
         <div class="list_model first_div">
           <div>单号：{{item.orderNo}}</div>
-          <div>{{item.offerChinese}}</div>
+          <div v-if="item.status == 0">匹配中</div>
+          <div v-if="item.status == 1">待付款</div>
+          <div v-if="item.status == 2">待确认</div>
+          <div v-if="item.status == 3">已完成</div>
+          <div v-if="item.status == -1">申诉未付款</div>
+          <div v-if="item.status == -2">申诉未确认</div>
         </div>
 
         <div class="list_model">
@@ -49,7 +59,7 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 export default {
   name: "transmarket",
   data() {
@@ -57,11 +67,11 @@ export default {
       title: "交易市场",
       tablist: ["买单列表", "卖单列表"], //头部切换
       tabstate: 0, //选中状态
-      interface:0,
+      interface: 0,
       page: 1, //页数
       lastId: 0, //lastid
       bodylist: [
-
+        
       ], //列表
       lastpage: "", //最后一页
 
@@ -72,16 +82,16 @@ export default {
   },
   created() {
     this.getrecord();
-    if(this.$route.query.lstate ){
-      this.tabstate = this.$route.query.lstate
-    } 
+    if (this.$route.query.lstate) {
+      this.tabstate = this.$route.query.lstate;
+    }
   },
   mounted() {
-    window.addEventListener("scroll", this.scrollFn,true);
+    window.addEventListener("scroll", this.scrollFn, true);
   },
   beforeDestroy() {
-      window.removeEventListener("scroll", this.scrollFn,true); // 销毁监听
-    },
+    window.removeEventListener("scroll", this.scrollFn, true); // 销毁监听
+  },
   methods: {
     //文档高度
     getScrollTop() {
@@ -134,25 +144,24 @@ export default {
         this.page++;
         this.getrecord();
         if (this.page == this.lastpage) {
-           window.removeEventListener("scroll", this.scrollFn); // 销毁监听;
+          window.removeEventListener("scroll", this.scrollFn); // 销毁监听;
         }
       }
     },
-    
 
     //挂单记录
     getrecord() {
       var _this = this;
 
-      if(_this.tabstate == 0){
+      if (_this.tabstate == 0) {
         //查询买单记录
-        _this.interface = '1002'
-      }else{
-        _this.interface = '1001'
+        _this.interface = "1002";
+      } else {
+        _this.interface = "1001";
       }
       let data = {
         lastId: _this.lastId,
-        page: _this.page,
+        page: _this.page
       };
       _this.$axios
         .fetchPost("/portal/C2C", {
@@ -174,13 +183,18 @@ export default {
           }
         });
     },
-
+    // 点击匹配的订单
+    pipei(item) {
+      if(item.status == 0){
+        // this.$router.push('mytrans')
+      }
+    },
     // 点击切换
     clicktab(index) {
       this.tabstate = index;
-      this.page= 1, //页数
-      this.lastId= 0, //lastid
-      this.bodylist = [];
+      (this.page = 1), //页数
+        (this.lastId = 0), //lastid
+        (this.bodylist = []);
       this.getrecord();
     },
     //买入
@@ -195,44 +209,48 @@ export default {
       this.shouid = list[index].id;
 
       // this.show = !this.show
-      this.$router.replace({ path: "/marketxq", query: { id:this.shouid,type:1} });
+      this.$router.replace({
+        path: "/marketxq",
+        query: { id: this.shouid, type: 1 }
+      });
     },
     // // 点击确定
     clickqd() {
-          let data={
-              id:this.shouid,
-              safeword:this.safeword
-          };
-          if(data.safeword == ''){
-              this.$toast('请输入支付密码');
-              return false;
-          }else if(data.safeword.length != 6){
-              this.$toast('安全密码必须由 6 位数字组成');
-              return false
+      let data = {
+        id: this.shouid,
+        safeword: this.safeword
+      };
+      if (data.safeword == "") {
+        this.$toast("请输入支付密码");
+        return false;
+      } else if (data.safeword.length != 6) {
+        this.$toast("安全密码必须由 6 位数字组成");
+        return false;
+      }
+
+      this.$axios
+        .fetchPost("/portal", {
+          interface: "1007",
+          module: "Attachment",
+          source: "web",
+          version: "v1",
+          data: data
+        })
+        .then(res => {
+          console.log("出售", res);
+          if (res.code == 0) {
+            this.$toast("出售成功");
+            setTimeout(() => {
+              this.show = !this.show;
+              (this.page = 1), //页数
+                (this.lastId = 0), //lastid
+                (this.bodylist = []);
+              this.getrecord();
+            }, 1300);
+          } else if (res.code >= 4800 && res.code < 4900) {
+            this.$toast(res.message);
           }
-          
-          this.$axios.fetchPost('/portal',{
-              interface: "1007",
-              module: "Attachment",
-              source: "web",
-              version: "v1",
-              data:data
-          })
-          .then(res=>{
-              console.log('出售',res)
-              if(res.code == 0){
-                  this.$toast('出售成功');
-                  setTimeout(()=>{
-                      this.show = !this.show;
-                      this.page= 1, //页数
-                      this.lastId= 0, //lastid
-                      this.bodylist = [];
-                      this.getrecord();
-                  },1300)
-              }else if(res.code >= 4800 && res.code < 4900){
-                  this.$toast(res.message)
-              }
-          })
+        });
     }
   },
   components: {}
@@ -243,13 +261,13 @@ export default {
 .bothse-market {
   height: 100vh;
   padding: 0 15px;
-  background: #0B0C21;
+  background: #0b0c21;
 }
 .titletab {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #121E4D;
+  background: #121e4d;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
   .tablist {
@@ -265,7 +283,7 @@ export default {
     color: #fff;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
-    background: linear-gradient(90deg,#494EFE 0%,  #0900F8 100%);
+    background: linear-gradient(90deg, #494efe 0%, #0900f8 100%);
   }
 }
 .bodylist {
@@ -276,7 +294,7 @@ export default {
     box-sizing: border-box;
     padding: 0 10px 20px;
     border-radius: 6px;
-    background: #1D1C3B;
+    background: #1d1c3b;
   }
 }
 .list_model {
@@ -293,10 +311,10 @@ export default {
   box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.1);
   // border-bottom: 1px solid #253786;
   div:first-child {
-    color: #D8D8D8;
+    color: #d8d8d8;
   }
   div:last-child {
-    color: #FF2626;
+    color: #ff2626;
   }
 }
 // .maijia {
@@ -307,12 +325,8 @@ export default {
   div:last-child {
     width: 76px;
     line-height: 26px;
-    
-    background: linear-gradient(
-      90deg,
-      #494EFE 0%,
-      #0900F8 100%
-    );
+
+    background: linear-gradient(90deg, #494efe 0%, #0900f8 100%);
     opacity: 0.79;
     text-align: center;
     border-radius: 20px;

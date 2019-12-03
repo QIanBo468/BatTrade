@@ -11,12 +11,12 @@
       >{{item}}</div>
     </div>
     <div class="bodylist" >
-      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click.stop="dingdan">
+      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click.stop="dingdan(item)">
         <div class="list_model first_div">
           <div>单号：{{item.orderNo}}</div>
           <div>
             <!--<span :style=" {'color':item.status != 3 ? '':'#1890FF'}">已完成</span>-->
-            <span v-if="item.status == 0" >匹配中</span>
+            <span  v-if="item.status == 0" >匹配中</span>
             <span v-if="item.status == 1" >待付款</span>
             <span v-if="item.status == 2" >待确认</span>
             <span v-if="item.status == 3" style="color:#1890FF">已完成</span>
@@ -65,9 +65,6 @@ export default {
       page: 1, //页数
       lastId: 0, //lastid
       bodylist: [
-        {
-          orderNo:123456,status:0,amount:12,unitPrice:100,price:120
-        }
       ], //列表
       lastpage: "" //最后一页
     };
@@ -248,10 +245,10 @@ export default {
 
         
     },
-    dingdan() {
-      // if(this.tabstate){
+    dingdan(item) {
+      if(item.status ==0){
         this.$router.push({path:'myDingdan',query:{type:this.tabstate}})
-      // }
+      }
     }
   },
   components: {}

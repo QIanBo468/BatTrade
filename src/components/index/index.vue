@@ -93,6 +93,7 @@ export default {
               interface: "1000",
               data: {}
             }).then(res => {
+                console.log(res)
             if (res.success) {
               let text = []
               this.list = res.data.list;

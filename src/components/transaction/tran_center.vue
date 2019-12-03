@@ -8,8 +8,13 @@
 
         <div class="centerbottom">
             <div class="todaybothdata">
-                <div>今日总交易量</div>
-                <div>{{cont}}</div>
+                <div class="todaybothdata-num">今日总交易量
+                     <div>{{cont}}</div>
+                </div>
+               
+                 <div class="todaybothdata-num">今日价格
+                     <div>{{pirce}}</div>
+                </div>
             </div>
 
             <div class="flex_both">
@@ -51,6 +56,7 @@ export default {
             yarr:[],
             xarr:[],
             newlist:[],
+            pirce:'0'
         }
     },
         components: {
@@ -68,6 +74,8 @@ export default {
           data: {}
         })
         .then(res => {
+            console.log(res)
+            // this.pirce = res.data.
           this.cont= res.data.today;
         })
 
@@ -170,19 +178,17 @@ export default {
     border-radius:6px;
     box-sizing: border-box;
     padding:18px 0 18px 30px;
-    div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .todaybothdata-num{
         color: #fff;
-        &:first-child{
-            font-size:13px;
-            font-weight:400;
-            color:rgba(255,255,255,1);
-        }
-         &:last-child{
-            font-size:23px;
-            font-weight:bold;
-            margin: 6px 0 0 0;
-            color:rgba(255,255,255,1);
-         }
+        font-size: 16px;
+        margin-right: 1rem;
+    }
+    .todaybothdata-right{
+        color: #fff;
+        font-size: 16px;
     }
 }
 .flex_both{
