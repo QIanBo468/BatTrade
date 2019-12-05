@@ -41,7 +41,9 @@ export default {
         }
     },
     created(){
+
         this.id = this.$route.query.id;
+        console.log(this.id)
         // if( this.$route.query.states == true){
         //     this.state = true;
         //     this.getxq();
@@ -75,6 +77,7 @@ export default {
             })
             .then(res=>{
                 console.log('详情',res.data)
+                console.log( _this.state)
                 if(res.code == 0){  
                     _this.bothdata = res.data
                     if(res.data.account && res.data.account.length >3){
@@ -100,7 +103,7 @@ export default {
 
             })
             .then(res=>{
-                // console.log('详情',res.data)
+                console.log('详情',res.data)
                 if(res.code == 0){  
                     _this.bothdata = res.data
                     if(res.data.account && res.data.account.length >3){

@@ -128,8 +128,10 @@ export default {
                 if(res.code == 0){
                     _this.$toast(res.message)
                     setTimeout(()=>{
+                        this.$router.go(-1)
                         Object.assign(_this.$data.uploaddata,_this.$options.data().uploaddata)
                         _this.getofc()
+                        
                     },1300)
                 }else if(res.code >= 4800 && res.code < 4900){
                     _this.$toast(res.message)

@@ -9,12 +9,16 @@
             </div>
             <div class="list_model">
                 <div>交易数量</div>
-                <div>{{bothdata.amount}}BAT</div>
+                <div v-if="!$route.query.mairu">{{bothdata.amount}}BAT</div>
+                <div v-else style="float:right; justify-content: end;  text-align: right;">  <input style="width:40%; background:transparent;border:none; text-align: right; border-bottom: 1px solid #eeeeee;" type="text" v-model="bothdata.amount"> &nbsp;&nbsp; &nbsp;BAT</div>
+               
             </div>
 
             <div class="list_model">
                 <div>单价</div>
                 <div>{{bothdata.unitPrice}}</div>
+               
+                
             </div>
 
             <div class="list_model maijia">
@@ -149,6 +153,7 @@ export default {
             chuan:{
                 id:'',
                 voucher:'',
+                amount:'',
                 safeword:'',
             },
             islooks:true,
@@ -187,6 +192,7 @@ export default {
                     }
                     _this.chuan.voucher = res.data.file;
                     _this.chuan.id = _this.bothdata.id
+                    _this.chuan.amount = _this.bothdata.amount
                     _this.show = false;
                     
                 }else{
@@ -206,7 +212,8 @@ export default {
         sell () {
             let data={
                 id: this.$route.query.id,
-                safeword:this.chuan.safeword
+                safeword:this.chuan.safeword,
+                amount: this.bothdata.amount
             };
             if(data.safeword == ''){
                 this.$toast('请输入支付密码');
@@ -232,9 +239,9 @@ export default {
                         // this.page= 1,
                         // this.lastId= 0,
                         // this.bodylist = [];
-                        this.$router.go(-1)
+                        this.$router.push('transaction')
                         // this.getrecord();
-                    },1300)
+                    },1000)
                 }else if(res.code >= 4800 && res.code < 4900){
                     this.$toast(res.message)
                 }

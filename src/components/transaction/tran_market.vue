@@ -201,7 +201,7 @@ export default {
     buyin(index) {
       var list = this.bodylist;
       let buyid = list[index].id;
-      this.$router.replace({ path: "/marketxq", query: { id: buyid } });
+      this.$router.replace({ path: "/marketxq", query: { id: buyid ,mairu:true} });
     },
     // 出售
     chushou(index) {
@@ -211,7 +211,7 @@ export default {
       // this.show = !this.show
       this.$router.replace({
         path: "/marketxq",
-        query: { id: this.shouid, type: 1 }
+        query: { id: this.shouid, type: 1,mairu:true }
       });
     },
     // // 点击确定

@@ -214,7 +214,7 @@ export default {
     }
     .indexbox{
         height: 100%;
-        padding: 0 15px;
+        // padding: 0 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -232,6 +232,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-around;
+        box-sizing: border-box;
         .listtitle{
             flex: 1;
             display: flex;
@@ -241,6 +242,7 @@ export default {
                 
                 display: flex;
                 align-items: center;
+                box-sizing: border-box;
                 h3{
                     color: #ffffff;
                     font-size: 18px;
@@ -292,7 +294,10 @@ export default {
     }
 }
 
-
+.van-list{
+    box-sizing: border-box !important;
+    width: 100%;
+}
 
 
 

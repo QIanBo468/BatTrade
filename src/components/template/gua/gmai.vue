@@ -126,6 +126,7 @@ export default {
                 if(res.code == 0){
                     _this.$toast(res.message)
                     setTimeout(()=>{
+                        this.$router.go(-1)
                         Object.assign(_this.$data.uploaddata,_this.$options.data().uploaddata)
                         _this.getofc()
                     },1300)

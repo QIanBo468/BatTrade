@@ -3,7 +3,7 @@
     <trannav :title="title" :leftj="true"></trannav>
     <div class="bodylist">
       <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click="goxq(index)">
-        <div class="between" >
+        <div class="between">
           <p>单号:{{item.orderNo}}</p>
           <span style="color:#f00">
             <span v-if="item.status == 0">匹配中</span>
@@ -30,11 +30,11 @@
         </div>
         <div class="between">
           <p>{{tabstate ==0 ? '卖家昵称':'买家昵称'}}</p>
-          <span>{{item.nickname}}</span>
+          <span>{{tabstate ==0 ? item.marketUser.nickname: item.user.nickname}}</span>
         </div>
         <div class="between">
           <p>{{tabstate ==0 ? '卖家手机号':'买家手机号'}}</p>
-          <span>{{item.mobile}}</span>
+          <span>{{tabstate ==0 ? item.marketUser.account: item.user.account}}</span>
         </div>
       </div>
     </div>
@@ -50,17 +50,18 @@ export default {
       interface: 0,
       page: 1, //页数
       lastId: 0, //lastid
-      tabstate:"",
-      bodylist: [
-      ]
+      tabstate: "",
+      bodylist: [],
+      id:''
     };
   },
   created() {
-    this.tabstate = this.$route.query.type
-    if(this.tabstate ==0){
-      this.title = '我的买单'
+    this.id = this.$route.query.id
+    this.tabstate = this.$route.query.type;
+    if (this.tabstate == 0) {
+      this.title = "我的买单";
     } else {
-      this.title = '我的卖单'
+      this.title = "我的卖单";
     }
     this.myjiao();
   },
@@ -130,7 +131,8 @@ export default {
       var _this = this;
       let data = {
         lastId: _this.lastId,
-        page: _this.page
+        page: _this.page,
+        marketId: _this.id
         //type: _this.tabstate
       };
 
@@ -209,22 +211,24 @@ export default {
 <style lang='less' scope>
 .mydingdan {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #0b0c21;
   justify-content: center;
   color: #fff;
   margin-top: 2rem;
   .bodylist {
+    height: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     margin-top: 1rem;
     padding: 1rem;
-
+    background: #0b0c21;
     .listmodule {
       background: #1d1c3b;
       padding: 0.5rem;
       border-radius: 8px;
+      margin-bottom: 1rem;
     }
     .between {
       width: 100%;

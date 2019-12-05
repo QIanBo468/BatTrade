@@ -11,8 +11,8 @@
       >{{item}}</div>
     </div>
     <div class="bodylist" >
-      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click.stop="dingdan(item)">
-        <div class="list_model first_div">
+      <div class="listmodule" v-for="(item,index) in bodylist" :key="index" >
+        <div class="list_model first_div" @click="dingdan(item)">
           <div>单号：{{item.orderNo}}</div>
           <div>
             <!--<span :style=" {'color':item.status != 3 ? '':'#1890FF'}">已完成</span>-->
@@ -26,17 +26,17 @@
           </div>
         </div>
 
-        <div class="list_model">
+        <div class="list_model" @click="dingdan(item)">
           <div>数量</div>
           <div>{{item.amount}}</div>
         </div>
 
-        <div class="list_model">
+        <div class="list_model" @click="dingdan(item)">
           <div>单价</div>
           <div>{{item.unitPrice}}</div>
         </div>
 
-        <div class="list_model maijia">
+        <div class="list_model maijia" @click="dingdan(item)">
           <div>售价</div>
           <div>{{item.price}}</div>
         </div>
@@ -246,8 +246,9 @@ export default {
         
     },
     dingdan(item) {
+      console.log(item)
       if(item.status ==0){
-        this.$router.push({path:'myDingdan',query:{type:this.tabstate}})
+        this.$router.push({path:'myDingdan',query:{type:this.tabstate,id: item.id}})
       }
     }
   },

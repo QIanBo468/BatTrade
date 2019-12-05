@@ -9,7 +9,7 @@
 
         <div class="headtext">
           <p>账号：{{info.account}}</p>
-          <p>ID：{{info.id}}</p>
+          <!-- <p>ID：{{info.id}}</p> -->
           <p>级别：{{info.level}}</p>
         </div>
       </div>

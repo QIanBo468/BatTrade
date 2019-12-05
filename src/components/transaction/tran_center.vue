@@ -75,7 +75,7 @@ export default {
         })
         .then(res => {
             console.log(res)
-            // this.pirce = res.data.
+            this.pirce = res.data.price
           this.cont= res.data.today;
         })
 

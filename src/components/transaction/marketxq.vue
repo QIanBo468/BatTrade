@@ -44,7 +44,7 @@ export default {
                 source: "web",
                 version: "v1",
                 data:{
-                    id:_this.id
+                    id:_this.id,
                 }
 
             })
@@ -62,6 +62,7 @@ export default {
             this.$router.push({path: '/transaction'})
         },
         submit() {
+            console.log(this.$refs.child.chuan.safeword)
             var _this = this;
             _this.$axios.fetchPost('/portal/C2C',{
                 interface: "3001",
@@ -69,7 +70,9 @@ export default {
                 source: "web",
                 version: "v1",
                 data:{
-                    id:_this.id
+                    id:_this.id,
+                    amount:_this.bothdata.amount,
+                    safeword: this.$refs.child.chuan.safeword
                 }
             }).then(res => {
               if(res.code == 0){
