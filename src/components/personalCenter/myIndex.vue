@@ -35,6 +35,13 @@
       <router-link class="list" to="/mytrans">
         <div class="my_first">
           <img src="../../../static/images/index/jiaoyi.png" alt />
+          <p>我的挂单</p>
+        </div>
+        <img width="22px" height="22px" src="../../../static/images/index/in@3x.png" alt />
+      </router-link>
+       <router-link class="list" :to="{path:'/myDingdan',query:{type:0}} ">
+        <div class="my_first">
+          <img src="../../../static/images/index/jiaoyi.png" alt />
           <p>我的交易</p>
         </div>
         <img width="22px" height="22px" src="../../../static/images/index/in@3x.png" alt />

@@ -1,6 +1,15 @@
 <template>
   <div class="mydingdan">
     <trannav :title="title" :leftj="true"></trannav>
+    <div class="titletab">
+      <div
+        class="tablist"
+        @click="clicktab(index)"
+        v-for="(item,index) in tablist"
+        :key="index"
+        :class="[index == tabstate?'tabact':'']"
+      >{{item}}</div>
+    </div>
     <div class="bodylist">
       <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click="goxq(index)">
         <div class="between">
@@ -30,11 +39,11 @@
         </div>
         <div class="between">
           <p>{{tabstate ==0 ? '卖家昵称':'买家昵称'}}</p>
-          <span>{{tabstate ==0 ? item.marketUser.nickname: item.user.nickname}}</span>
+          <span>{{item.user.nickname}}</span>
         </div>
         <div class="between">
           <p>{{tabstate ==0 ? '卖家手机号':'买家手机号'}}</p>
-          <span>{{tabstate ==0 ? item.marketUser.account: item.user.account}}</span>
+          <span>{{item.user.account}}</span>
         </div>
       </div>
     </div>
@@ -45,24 +54,25 @@
 export default {
   data() {
     return {
-      title: "我的买单",
+      title: "我的交易",
       lastpage: "", //最后一页
       interface: 0,
       page: 1, //页数
       lastId: 0, //lastid
       tabstate: "",
       bodylist: [],
-      id:''
+      id: 1,
+      tablist: ["我的买单", "我的卖单"]
     };
   },
   created() {
-    this.id = this.$route.query.id
+    this.id = this.$route.query.id;
     this.tabstate = this.$route.query.type;
-    if (this.tabstate == 0) {
-      this.title = "我的买单";
-    } else {
-      this.title = "我的卖单";
-    }
+    // if (this.tabstate == 0) {
+    //   this.title = "我的买单";
+    // } else {
+    //   this.title = "我的卖单";
+    // }
     this.myjiao();
   },
   mounted() {
@@ -180,6 +190,13 @@ export default {
           query: { id: id, states: true }
         });
       }
+      if (list[index].status == 3 && this.tabstate != 1) {
+        // console.log(list[index].onOffer)
+        this.$router.push({
+          path: "/payment",
+          query: { id: id, states: true }
+        });
+      }
       if (list[index].status == 3 && this.tabstate == 1) {
         // console.log(list[index].onOffer)
         this.$router.push({
@@ -203,6 +220,13 @@ export default {
       /*if(list[index].status == 2&&this.tabstate == 0){
            this.$router.push({path:'/payment',query:{id:id,states:true}})
         }*/
+    },
+    clicktab(index) {
+      this.tabstate = index;
+      (this.page = 1), //页数
+        (this.lastId = 0), //lastid
+        (this.bodylist = []);
+      this.myjiao();
     }
   }
 };
@@ -216,12 +240,46 @@ export default {
   justify-content: center;
   color: #fff;
   margin-top: 2rem;
+  .titletab {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #121e4d;
+    margin: 0.5rem 15px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    padding-top: 0.5rem;
+    .tablist {
+      width: 50%;
+      line-height: 35px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(216, 216, 216, 1);
+      position: relative;
+    }
+    .tabact {
+      color: #fff;
+      background: linear-gradient(90deg, #494efe 0%, #0900f8 100%);
+      border-top-right-radius: 20px;
+      border-top-left-radius: 20px;
+      // &:after {
+      //   content: "";
+      //   width: 20px;
+      //   height: 3px;
+      //   background: rgba(248, 77, 77, 1);
+      //   border-radius: 2px;
+      //   position: absolute;
+      //   bottom: 0;
+      //   left: 44%;
+      // }
+    }
+  }
   .bodylist {
-    height: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    margin-top: 1rem;
+    // margin-top: 1rem;
     padding: 1rem;
     background: #0b0c21;
     .listmodule {

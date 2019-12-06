@@ -17,7 +17,7 @@
         :key="index"
         @click="pipei(item)"
       >
-        <div class="list_model first_div">
+        <div class="list_model first_div" >
           <div>单号：{{item.orderNo}}</div>
           <div v-if="item.status == 0">匹配中</div>
           <div v-if="item.status == 1">待付款</div>
@@ -32,12 +32,12 @@
           <div>{{item.amount}}</div>
         </div>
 
-        <div class="list_model">
+        <div class="list_model" >
           <div>单价</div>
           <div>{{item.unitPrice}}</div>
         </div>
 
-        <div class="list_model maijia">
+        <div class="list_model maijia" >
           <div>售价</div>
           <div>{{item.price}}</div>
         </div>
@@ -201,7 +201,7 @@ export default {
     buyin(index) {
       var list = this.bodylist;
       let buyid = list[index].id;
-      this.$router.replace({ path: "/marketxq", query: { id: buyid ,mairu:true} });
+      this.$router.replace({ path: "/marketxq", query: { id: buyid,type: 1 ,mairu:true} });
     },
     // 出售
     chushou(index) {
@@ -251,7 +251,8 @@ export default {
             this.$toast(res.message);
           }
         });
-    }
+    },
+  
   },
   components: {}
 };

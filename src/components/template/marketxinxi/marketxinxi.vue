@@ -9,8 +9,9 @@
             </div>
             <div class="list_model">
                 <div>交易数量</div>
-                <div v-if="!$route.query.mairu">{{bothdata.amount}}BAT</div>
-                <div v-else style="float:right; justify-content: end;  text-align: right;">  <input style="width:40%; background:transparent;border:none; text-align: right; border-bottom: 1px solid #eeeeee;" type="text" v-model="bothdata.amount"> &nbsp;&nbsp; &nbsp;BAT</div>
+                <div >{{bothdata.amount}}BAT</div>
+                <!-- v-if="!$route.query.mairu" -->
+                <!-- <div v-else style="float:right; justify-content: end;  text-align: right;">  <input style="width:40%; background:transparent;border:none; text-align: right; border-bottom: 1px solid #eeeeee;" type="text" v-model="bothdata.amount"> &nbsp;&nbsp; &nbsp;BAT</div> -->
                
             </div>
 
@@ -115,6 +116,10 @@
             <div v-if="chuan.voucher!=''&&state!=true"><img  :src="chuan.voucher" alt=""></div>
             <div v-if="bothdata.voucher&&bothdata.status!=1" @click="$emit('imgshow',bothdata.voucher)" ><img :src="bothdata.voucher" alt=""></div>
         </div>
+        <div class="transmm" v-if="$route.query.type && bothdata.status!=2">
+            <div>所需数量</div>
+            <input  v-model="bothdatas.amount" placeholder="请输入所需数量" />
+        </div>
         <!-- 交易密码 -->
         <div class="transmm" v-if="title == 1 && state ==true && bothdata.type==1 && bothdata.status!=3 && bothdata.status!=2">
             <div>交易密码</div>
@@ -124,6 +129,7 @@
             <div>交易密码</div>
             <input type="password" v-model="chuan.safeword" placeholder="请输入交易密码" />
         </div>
+        
         <van-overlay  :show="show" />
         <div class="share" v-if="show">
             <van-loading class="quzhong" color="#fff" size="50" />
@@ -141,6 +147,7 @@ export default {
         state:true, //true  需要输入交易密码
         islook:false,//true显示，false不显示
         bothdata:{},
+        
         islook:true,
     },
 
@@ -156,12 +163,14 @@ export default {
                 amount:'',
                 safeword:'',
             },
+            bothdatas:{},
             islooks:true,
             show:false,
         }
     },
     created(){
-
+        this.bothdatas = this.bothdata
+        console.log(this.$route.query.type)
     },
     mounted(){
         
@@ -213,7 +222,7 @@ export default {
             let data={
                 id: this.$route.query.id,
                 safeword:this.chuan.safeword,
-                amount: this.bothdata.amount
+                amount: this.bothdatas.amount
             };
             if(data.safeword == ''){
                 this.$toast('请输入支付密码');

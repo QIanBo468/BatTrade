@@ -44,7 +44,7 @@
 
         <div class="list_model clickview" >
           <div></div>
-          <div  v-if="item.status > 0" @click="goxq(index)" class="details">详情</div>
+          <div  v-if="item.status > 0" @click="dingdan(item,index)" class="details">详情</div>
           <div  @click="chexiao(index)" v-if="item.status == 0" class="cancle">撤销</div>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default {
   name: "mytrans",
   data() {
     return {
-      title: "我的交易",
+      title: "我的挂单",
       tablist: ["买单列表", "卖单列表"], //头部切换
       tabstate: 0, //选中状态
       interface:0,
@@ -225,17 +225,17 @@ export default {
 
         if(list[index].status == 3 && this.tabstate != 1){
           // console.log(list[index].onOffer)
-          this.$router.push({path:'/payment',query:{id:id,states:true}})
+          this.$router.push({path:'myDingdan',query:{id:id,states:true}})
         }
          if(list[index].status == 3 && this.tabstate == 1){
           // console.log(list[index].onOffer)
-          this.$router.push({path:'/payment',query:{id:id,states:true,tabstate:1}})
+          this.$router.push({path:'myDingdan',query:{id:id,states:true,tabstate:1}})
         }
         if(list[index].status != 1 && list[index].status != 3){
-          this.$router.push({path:'/payment',query:{id:id,states:false}})
+          this.$router.push({path:'myDingdan',query:{id:id,states:false}})
         }
         if(list[index].status == 1){
-          this.$router.push({path:'/payment',query:{id:id,true:false,tabstate:0}})
+          this.$router.push({path:'myDingdan ',query:{id:id,true:false,tabstate:0}})
         }
 
         /*if(list[index].status == 2&&this.tabstate == 0){
@@ -245,11 +245,56 @@ export default {
 
         
     },
-    dingdan(item) {
+    dingdan(item,index) {
       console.log(item)
-      if(item.status ==0){
+      // if(item.status){
         this.$router.push({path:'myDingdan',query:{type:this.tabstate,id: item.id}})
-      }
+      // } 
+      // else{
+      //  let list = this.bodylist;
+      // let id = list[index].id;
+      // console.log(list[index].status);
+      // // return false;
+
+      // if (list[index].status < 0) {
+      //   this.$toast("该订单已被投诉无法查看详情");
+      //   return false;
+      // }
+
+      // if (list[index].status == 3 && this.tabstate != 1) {
+      //   // console.log(list[index].onOffer)
+      //   this.$router.push({
+      //     path: "/payment",
+      //     query: { id: id, states: true }
+      //   });
+      // }
+      // if (list[index].status == 3 && this.tabstate != 1) {
+      //   // console.log(list[index].onOffer)
+      //   this.$router.push({
+      //     path: "/payment",
+      //     query: { id: id, states: true }
+      //   });
+      // }
+      // if (list[index].status == 3 && this.tabstate == 1) {
+      //   // console.log(list[index].onOffer)
+      //   this.$router.push({
+      //     path: "/payment",
+      //     query: { id: id, states: true, tabstate: 1 }
+      //   });
+      // }
+      // if (list[index].status != 1 && list[index].status != 3) {
+      //   this.$router.push({
+      //     path: "/payment",
+      //     query: { id: id, states: false }
+      //   });
+      // }
+      // if (list[index].status == 1) {
+      //   this.$router.push({
+      //     path: "/payment",
+      //     query: { id: id, true: false, tabstate: 0 }
+      //   });
+      // }
+      // }
     }
   },
   components: {}
