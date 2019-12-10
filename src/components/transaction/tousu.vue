@@ -63,7 +63,7 @@ export default {
     uploadOne(list, i) {
       let form = new FormData()
       form.append("file", list[i])
-      this.$axios.fetchPost("http://bat.qdunzi.com/upload", form).then(res => {
+      this.$axios.fetchPost("http://www.batchina.top/upload", form).then(res => {
         // console.log(res)
         list[i]._url = res.data.file
         if (i + 1 < list.length) {

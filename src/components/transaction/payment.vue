@@ -2,16 +2,17 @@
     <div class="box">
         <div class="bothse">
             <trannav title="详情" :leftj="true" ></trannav>
-            <marketxinxi :title='1' :state='state' :islook='islook'  ref="dianji" @imgshow='imgshow' :bothdata="bothdata"></marketxinxi>
+            <marketxinxi :title='1' :state='state' :islook='islook'  ref="dianji" @imgshow='imgshow' :bothdata="bothdata" :jiao='jiao'></marketxinxi>
 
 
             <div class="buyin" v-if="state && $route.query.tabstate != 1 && bothdata.status==1 && bothdata.type ==1"  @click="qdfu">确认付款</div>
-            <div class="buyins" v-if="bothdata.type ==1 && (bothdata.status ==2 )  ">
+            <div class="buyin" v-if="jiao"  @click="qdfu">确认付款</div>
+            <div class="buyins" v-if="bothdata.type ==-1 && (bothdata.status ==2 ) ">
                 <div :class="{'stop-mark':isok===1}" @click="qued">确认</div>
                 <div @click="tousu">投诉</div>
             </div>
 
-          <div class="buyin" v-if="bothdata.type ==-1 &&bothdata.status ==2">
+          <div class="buyin" v-if="bothdata.type ==1 &&bothdata.status ==2">
             <div  :class="isok?stopMark:''"  @click="tousu">投诉</div>
           </div>
         </div>
@@ -37,7 +38,8 @@ export default {
             bothdata:{},//详情里的数据
             islook:false,
             safepwd:'',
-            isok:0
+            isok:0,
+            jiao:false
         }
     },
     created(){
@@ -51,6 +53,10 @@ export default {
         //     this.state = false;
         //     this.getjyxq()
         // }   
+        console.log(this.$route.query.jiao)
+        if(this.$route.query.jiao) {
+            this.jiao = true
+        }
         if( this.$route.query.states == false){
             this.state = false;
             this.getjyxq()   //交易详情
@@ -76,7 +82,7 @@ export default {
 
             })
             .then(res=>{
-                console.log('详情',res.data)
+                console.log('详情1',res.data)
                 console.log( _this.state)
                 if(res.code == 0){  
                     _this.bothdata = res.data
@@ -103,7 +109,7 @@ export default {
 
             })
             .then(res=>{
-                console.log('详情',res.data)
+                console.log('详情2',res.data)
                 if(res.code == 0){  
                     _this.bothdata = res.data
                     if(res.data.account && res.data.account.length >3){

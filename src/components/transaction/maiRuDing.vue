@@ -19,10 +19,9 @@
         <div>单价</div>
         <div>{{bothdata.unitPrice}}</div>
       </div>
-      <!-- remainingAmount -->
       <div class="list_model">
-        <div>剩余</div>
-        <div>{{bothdata.remainingAmount}}</div>
+        <div>单价</div>
+        <div>{{bothdata.unitPrice}}</div>
       </div>
       <div class="list_model maijia">
         <div>售价</div>
@@ -30,7 +29,8 @@
       </div>
     </div>
     <!-- 卖家信息 -->
-    <div class="marketmod" v-if="bothdata.seller">
+    <!-- v-if="bothdata.seller" -->
+    <div class="marketmod">
       <div class="list_model">
         <div>卖家昵称</div>
         <div>{{bothdata.seller.nickname}}</div>
@@ -41,20 +41,20 @@
         <div>{{bothdata.seller.mobile}}</div>
       </div>
     </div>
-    <div class="marketmod" v-if="$route.query.type && bothdata.buyer">
-      <div class="list_model">
-        <div>买家昵称</div>
-        <div>{{bothdata.buyer.nickname}}</div>
-      </div>
+    <!-- <div class="marketmod" v-if='$route.query.type && bothdata.buyer'>
+            <div class="list_model">
+                <div>买家昵称</div>
+                <div>{{bothdata.buyer.nickname}}</div>
+            </div>
 
-      <div class="list_model">
-        <div>买家手机号</div>
-        <div>{{bothdata.buyer.mobile}}</div>
-      </div>
-    </div>
+            <div class="list_model">
+                <div>买家手机号</div>
+                <div>{{bothdata.buyer.mobile}}</div>
+            </div>
+    </div>-->
     <!-- 卖家账号 -->
-    <div class="marketmod lastdiv" v-if="!$route.query.type && bothdata.account ">
-      <!-- v-if='!$route.query.type ' -->
+    <div class="marketmod lastdiv">
+      <!-- v-if='!$route.query.type   v-if='!$route.query.type && bothdata.account '' -->
       <div class="maihome">卖家账号</div>
       <!-- <div class="xincont" v-if="islooks == true? index<3:true" v-for="(item,index) in bothdata.account" :key="index">
               <div class="contimg"><img :src="item.type == 1? fubao:item.type == 2? wx:yh " alt=""></div>
@@ -117,22 +117,22 @@
       <!-- <div class="buyin" v-if="title == 0">买入</div> -->
     </div>
     <!-- 买家信息 -->
-    <div class="marketmod" v-if="title == 1&& bothdata.buyer">
-      <div class="list_model">
-        <div>买家昵称</div>
-        <div>{{bothdata.buyer.nickname}}</div>
-      </div>
+    <!-- <div class="marketmod"  v-if="title == 1&& bothdata.buyer">
+                <div class="list_model">
+                    <div>买家昵称</div>
+                    <div>{{bothdata.buyer.nickname}}</div>
+                </div>
 
-      <div class="list_model">
-        <div>买家手机号</div>
-        <div>{{bothdata.buyer.mobile}}</div>
-      </div>
-    </div>
+                <div class="list_model">
+                    <div>买家手机号</div>
+                    <div>{{bothdata.buyer.mobile}}</div>
+                </div>
+    </div>-->
     <!-- 上传支付凭证 -->
-    <div class="uploadpz" v-if="title == 1 ">
+    <div class="uploadpz">
       <!--v-if="title == 1 && ($route.query.tabstate != 1) "-->
       <div>上传支付凭证</div>
-      <div v-if="state && bothdata.type==1 && bothdata.status!=3 && bothdata.status!=2 || jiao">
+      <div v-if="state && bothdata.type==1 && bothdata.status!=3 && bothdata.status!=2">
         <van-uploader
           v-model="fileList"
           multiple
@@ -141,45 +141,33 @@
           :after-read="afterRead"
         />
       </div>
-      <!-- <div v-if="jiao"><van-uploader v-model="fileList" multiple preview-size="100" :max-count="1" :after-read="afterRead" /></div> -->
-      <!-- <div v-if="chuan.voucher!=''&&state!=true"><img  :src="chuan.voucher" alt=""></div> -->
+      <div v-if="chuan.voucher!=''&&state!=true">
+        <img :src="chuan.voucher" alt />
+      </div>
       <div v-if="bothdata.voucher&&bothdata.status!=1" @click="$emit('imgshow',bothdata.voucher)">
         <img :src="bothdata.voucher" alt />
       </div>
     </div>
-    <!-- <div class="uploadpz" v-if="jiao">  
-            <div>上传支付凭证</div>
-            <div v-if="jiao"><van-uploader v-model="fileList" multiple preview-size="100" :max-count="1" :after-read="afterRead" /></div>
-            <div v-if="jiao"><img  :src="chuan.voucher" alt=""></div>
-            <div v-if="jiao" @click="$emit('imgshow',bothdata.voucher)" ><img :src="bothdata.voucher" alt=""></div>
+    <!-- <div class="transmm" v-if="$route.query.type && bothdata.status!=2">
+            <div>卖出数量</div>
+            <input  v-model="bothdatas.amount" placeholder="请输入所需数量" />
     </div>-->
-    <div class="transmm" v-if="$route.query.type && bothdata.status!=2">
-      <div>卖出数量</div>
-      <input v-model="bothdatas.amount" placeholder="请输入所需数量" />
-    </div>
     <!-- 交易密码 -->
-    <div
-      class="transmm"
-      v-if="title == 1 && state ==true  && bothdata.type==1&& bothdata.status!=3 && bothdata.status!=2"
-    >
+    <div class="transmm">
       <div>交易密码</div>
       <input type="password" v-model=" chuan.safeword" placeholder="请输入交易密码" />
     </div>
-    <div class="transmm" v-if="jiao">
-      <div>交易密码</div>
-      <input type="password" v-model=" chuan.safeword" placeholder="请输入交易密码" />
-    </div>
-    <!-- <div class="transmm" v-if="jiao && bothdata.status!=2">
+    <!-- <div class="transmm" v-if="$route.query.type && bothdata.status!=2">
             <div>交易密码</div>
             <input type="password" v-model="chuan.safeword" placeholder="请输入交易密码" />
-    </div> -->
+    </div>-->
 
-    <van-overlay :show="show" />
-    <div class="share" v-if="show">
-      <van-loading class="quzhong" color="#fff" size="50" />
-    </div>
-    <div class="buyin" v-if="$route.query.type" @click="sell">出售</div>
-    <div class="buyin" v-if="$route.query.type == 2" @click="sell">买入</div>
+    <!-- <van-overlay  :show="show" />
+        <div class="share" v-if="show">
+            <van-loading class="quzhong" color="#fff" size="50" />
+        </div> 
+        <div class="buyin" v-if='$route.query.type' @click='sell'>出售</div>
+    <div class="buyin" v-if='$route.query.type == 2' @click='sell'>买入</div>-->
   </div>
 </template>
 
@@ -191,7 +179,7 @@ export default {
     state: true, //true  需要输入交易密码
     islook: false, //true显示，false不显示
     bothdata: {},
-    jiao: false, //交易进入
+
     islook: true
   },
 
@@ -352,7 +340,6 @@ export default {
           if (res.code == 0) {
             _this.$toast(res.message);
             setTimeout(() => {
-                this.$router.go(-1)  //,query:{type:0}}
               _this.$parent.changefuk();
             }, 1200);
           } else if (res.code >= 4800 && res.code < 4900) {

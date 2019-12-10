@@ -35,6 +35,10 @@
           <div>单价</div>
           <div>{{item.unitPrice}}</div>
         </div>
+        <div class="list_model" @click="dingdan(item)">
+          <div>剩余</div>
+          <div>{{item.remainingAmount}}</div>
+        </div>
 
         <div class="list_model maijia" @click="dingdan(item)">
           <div>售价</div>
@@ -248,7 +252,7 @@ export default {
     dingdan(item,index) {
       console.log(item)
       // if(item.status){
-        this.$router.push({path:'myDingdan',query:{type:this.tabstate,id: item.id}})
+        this.$router.push({path:'myGuadan',query:{type:this.tabstate,id: item.id}})
       // } 
       // else{
       //  let list = this.bodylist;

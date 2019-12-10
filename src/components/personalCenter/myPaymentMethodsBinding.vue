@@ -359,7 +359,7 @@ export default {
     upload(file) {
       let form = new FormData()
       form.append("file", file.file)
-      this.$axios.fetchPost("http://bat.qdunzi.com/upload", form).then(res => {
+      this.$axios.fetchPost("http://www.batchina.top/upload", form).then(res => {
         // console.log(res)
         this.qrCode = res.data.file
       }).catch(err => {

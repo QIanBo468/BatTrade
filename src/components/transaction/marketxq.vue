@@ -9,6 +9,10 @@
         <!-- <trannav title="交易详情" :leftj="true" :teshu='1'></trannav> -->
         <div class="bothse">
             <marketxinxi ref='child' :title='0' :islook='islook' :bothdata="bothdata"></marketxinxi>
+            <div class="transmm" v-if="!$route.query.type">
+            <div>买入数量</div>
+            <input  v-model="amount" placeholder="请输入所需数量" />
+        </div>
             <div class="buyin" v-if='!$route.query.type' @click='submit'>买入</div>
             <!-- <div class="buyin" v-if='$route.query.type' @click='sell'>出售</div> -->
             <!-- <router-link :to="'/payment?id='+id" ></router-link> -->
@@ -26,7 +30,8 @@ export default {
             id:'',//传来的id
             bothdata:{},//详情里的数据
             islook:false,
-            title:0
+            title:0,
+            amount:''
         }
     },
     created(){
@@ -71,12 +76,13 @@ export default {
                 version: "v1",
                 data:{
                     id:_this.id,
-                    amount:_this.bothdata.amount,
+                    amount:_this.amount,
                     safeword: this.$refs.child.chuan.safeword
                 }
             }).then(res => {
+                console.log('新id',res)
               if(res.code == 0){
-                _this.$router.push({path:'/payment',query:{id: _this.id}})
+                _this.$router.push({path:'/payment',query:{id: res.data.tradeId,states:false,jiao:true}})
               }else{
                 this.$toast(res.message)
               }
@@ -157,6 +163,31 @@ export default {
     background:#0B0C21;
     a{
         display: block;
+    }
+}
+.transmm{
+    margin-top:10px;
+    padding:0 16px;
+    height:44px;
+    align-items:center;
+    display: flex;
+    background:#1D1C3B;
+
+    div{
+        &:first-child{
+            font-size:14px;
+            font-weight:400;
+            color:rgba(255,255,255,1);
+            margin-right:20px;
+        }
+        
+    }
+    input{
+        border:none;
+        background:#1D1C3B;
+        font-size:14px;
+        font-weight:400;
+        color:#fff;
     }
 }
 .buyin{

@@ -1,15 +1,6 @@
 <template>
   <div class="mydingdan">
     <trannav :title="title" :leftj="true"></trannav>
-    <div class="titletab">
-      <div
-        class="tablist"
-        @click="clicktab(index)"
-        v-for="(item,index) in tablist"
-        :key="index"
-        :class="[index == tabstate?'tabact':'']"
-      >{{item}}</div>
-    </div>
     <div class="bodylist">
       <div class="listmodule" v-for="(item,index) in bodylist" :key="index" @click="goxq(index)">
         <div class="between">
@@ -38,12 +29,12 @@
           </div>
         </div>
         <div class="between">
-          <p>{{tabstate ==0 ? '卖家昵称':'买家昵称'}}</p>
-          <span>{{item.user.nickname}}</span>
+          <p>卖家昵称</p>
+          <span>{{item.user.account}}</span>
         </div>
         <div class="between">
-          <p>{{tabstate ==0 ? '卖家手机号':'买家手机号'}}</p>
-          <span>{{item.user.account}}</span>
+          <p>卖家手机号</p>
+          <span>{{item.user.nickname}}</span>
         </div>
       </div>
     </div>
@@ -54,25 +45,26 @@
 export default {
   data() {
     return {
-      title: "我的交易",
+      title: "我的买单",
       lastpage: "", //最后一页
       interface: 0,
       page: 1, //页数
       lastId: 0, //lastid
-      tabstate: "",
-      bodylist: [],
-      id: 1,
-      tablist: ["我的买单", "我的卖单"]
+      bodylist: [
+      ],
+      tabstate:0,
     };
   },
   created() {
-    this.id = this.$route.query.id;
-    this.tabstate = this.$route.query.type;
-    // if (this.tabstate == 0) {
-    //   this.title = "我的买单";
-    // } else {
-    //   this.title = "我的卖单";
-    // }
+    console.log(this.$route.query.type)
+    if(this.$route.query.type ==0 ){
+     this.title = '我的买单'
+     this.tabstate = this.$route.query.type
+    } 
+    if(this.$route.query.type ==1){
+      this.title = '我的卖单'
+      this.tabstate = this.$route.query.type
+    }
     this.myjiao();
   },
   mounted() {
@@ -142,10 +134,10 @@ export default {
       let data = {
         lastId: _this.lastId,
         page: _this.page,
-        marketId: _this.id
         //type: _this.tabstate
+        marketId: this.$route.query.id
       };
-
+        console.log(data.marketId)
       if (_this.tabstate == 0) {
         _this.interface = 3001;
       } else {
@@ -161,7 +153,7 @@ export default {
           data: data
         })
         .then(res => {
-          console.log("交易记录", res);
+          console.log("我的交易", res);
           if (res.code == 0) {
             _this.lastId = res.data.lastId;
             _this.page = res.data.currentPage;
@@ -172,49 +164,7 @@ export default {
           }
         });
     },
-    // goxq(index) {
-    //   let list = this.bodylist;
-    //   let id = list[index].id;
-    //   console.log(list[index].status);
-    //   // return false;
-
-    //   if (list[index].status < 0) {
-    //     this.$toast("该订单已被投诉无法查看详情");
-    //     return false;
-    //   }
-
-    //   if (list[index].status == 3 && this.tabstate != 1) {
-    //     // console.log(list[index].onOffer)
-    //     this.$router.push({
-    //       path: "payment",
-    //       query: { id: id, states: true }
-    //     });
-    //   }
-    //   if (list[index].status == 3 && this.tabstate == 1) {
-    //     // console.log(list[index].onOffer)
-    //     this.$router.push({
-    //       path: "payment",
-    //       query: { id: id, states: true, tabstate: 1 }
-    //     });
-    //   }
-    //   if (list[index].status != 1 && list[index].status != 3) {
-    //     this.$router.push({
-    //       path: "payment",
-    //       query: { id: id, states: false }
-    //     });
-    //   }
-    //   if (list[index].status == 1) {
-    //     this.$router.push({
-    //       path: "payment ",
-    //       query: { id: id, true: false, tabstate: 0 }
-    //     });
-    //   }
-
-    //   /*if(list[index].status == 2&&this.tabstate == 0){
-    //        this.$router.push({path:'/payment',query:{id:id,states:true}})
-    //     }*/
-    // },
-    goxq(index) {
+      goxq(index) {
       let list = this.bodylist;
       let id = list[index].id;
       console.log(list[index].status);
@@ -263,13 +213,6 @@ export default {
            this.$router.push({path:'/payment',query:{id:id,states:true}})
         }*/
     },
-    clicktab(index) {
-      this.tabstate = index;
-      (this.page = 1), //页数
-        (this.lastId = 0), //lastid
-        (this.bodylist = []);
-      this.myjiao();
-    }
   }
 };
 </script>
@@ -277,58 +220,24 @@ export default {
 <style lang='less' scope>
 .mydingdan {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background: #0b0c21;
   justify-content: center;
   color: #fff;
   margin-top: 2rem;
-  .titletab {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #121e4d;
-    margin: 0.5rem 15px;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    padding-top: 0.5rem;
-    .tablist {
-      width: 50%;
-      line-height: 35px;
-      text-align: center;
-      font-size: 16px;
-      font-weight: 400;
-      color: rgba(216, 216, 216, 1);
-      position: relative;
-    }
-    .tabact {
-      color: #fff;
-      background: linear-gradient(90deg, #494efe 0%, #0900f8 100%);
-      border-top-right-radius: 20px;
-      border-top-left-radius: 20px;
-      // &:after {
-      //   content: "";
-      //   width: 20px;
-      //   height: 3px;
-      //   background: rgba(248, 77, 77, 1);
-      //   border-radius: 2px;
-      //   position: absolute;
-      //   bottom: 0;
-      //   left: 44%;
-      // }
-    }
-  }
   .bodylist {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    // margin-top: 1rem;
-    padding: 1rem;
     background: #0b0c21;
+    margin-top: 1rem;
+    padding: 1rem;
+
     .listmodule {
       background: #1d1c3b;
       padding: 0.5rem;
       border-radius: 8px;
-      margin-bottom: 1rem;
+      margin-top: 1rem;
     }
     .between {
       width: 100%;

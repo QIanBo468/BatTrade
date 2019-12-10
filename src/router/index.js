@@ -30,6 +30,8 @@ import address from '@/components/index/address'
 import mall from '@/components/mall'
 import extractRecord from '@/components/index/extractRecord'
 import mydingdan from '@/components/transaction/myDingdan'
+import maiRuDing from '@/components/transaction/maiRuDing'
+import myGuadan from '@/components/transaction/myGuadan'
 
 
 // import charge from '@/components/index/'
@@ -49,6 +51,16 @@ export default new Router({
       path: '/password',
       name: 'Password',
       component: Password
+    },
+    {
+      path: '/maiRuDing',
+      name: 'maiRuDing',
+      component: maiRuDing
+    },
+    {
+      path: '/myGuadan',
+      name: 'myGuadan',
+      component: myGuadan
     },
     {
       path: '/authentication',

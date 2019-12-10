@@ -36,7 +36,10 @@
           <div>单价</div>
           <div>{{item.unitPrice}}</div>
         </div>
-
+      <div class="list_model" >
+          <div>剩余</div>
+          <div>{{item.remainingAmount}}</div>
+        </div>
         <div class="list_model maijia" >
           <div>售价</div>
           <div>{{item.price}}</div>
@@ -201,7 +204,7 @@ export default {
     buyin(index) {
       var list = this.bodylist;
       let buyid = list[index].id;
-      this.$router.replace({ path: "/marketxq", query: { id: buyid,type: 1 ,mairu:true} });
+      this.$router.replace({ path: "/marketxq", query: { id: buyid,type: 0 ,mairu:true} });
     },
     // 出售
     chushou(index) {
